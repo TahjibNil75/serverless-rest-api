@@ -1,0 +1,34 @@
+service: serverless-rest-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: ap-southeast-1
+  environment:
+    DB_NAME: ${ssm:/db-name}
+    DB_USER: ${ssm:/db-username}
+    DB_HOST: ${ssm:/db-host}
+    DB_PORT: ${ssm:/db-port}
+    DB_PASSWORD: ${ssm:/db-password}
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  createAuthor:
+    handler: bin/create_author
+    events:
+      - httpApi:
+          path: /authors
+          method: post
+  getAuthors:
+    handler: bin/get_authors
+    events:
+      - httpApi:
+          path: /authors
+          method: get
