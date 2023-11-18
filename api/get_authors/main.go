@@ -17,7 +17,7 @@ func Handler(request events.APIGatewayProxyResponse) (events.APIGatewayProxyResp
 			Body:       "Database connection failed",
 		}, nil
 	}
-	authors, err := db.GetAllAuthor()
+	authors, err := db.GetAllAuthorWithRetry()
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,

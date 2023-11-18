@@ -7,11 +7,13 @@ provider:
   runtime: go1.x
   region: ap-southeast-1
   environment:
-    DB_NAME: ${ssm:/db-name}
-    DB_USER: ${ssm:/db-username}
-    DB_HOST: ${ssm:/db-host}
-    DB_PORT: ${ssm:/db-port}
-    DB_PASSWORD: ${ssm:/db-password}
+     DB_NAME: ${ssm:/db-name}
+     DB_USER: ${ssm:/db-username}
+     DB_HOST: ${ssm:/db-host}
+     DB_PORT: ${ssm:/db-port}
+     DB_PASSWORD: ${ssm:/db-password}
+   
+
 
 package:
   exclude:
