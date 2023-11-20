@@ -26,11 +26,11 @@ functions:
     handler: bin/create_author
     events:
       - httpApi:
-          path: /authors
+          path: /signup
           method: post
   getAuthors:
     handler: bin/get_authors
     events:
       - httpApi:
-          path: /authors
+          path: /authors_list
           method: get
