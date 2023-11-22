@@ -13,3 +13,8 @@ type Author struct {
 	Token           *string   `json:"token"`
 	RefreshToken    *string   `json:"refreshToken"`
 }
+
+type GetAuthors struct {
+	UserName string `json:"userName"`
+	Email    string `json:"email"`
+}

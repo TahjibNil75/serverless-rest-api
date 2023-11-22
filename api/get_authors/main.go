@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/tahjib75/common"
+	"github.com/tahjib75/models"
 )
 
 func Handler(request events.APIGatewayProxyResponse) (events.APIGatewayProxyResponse, error) {
@@ -25,7 +26,15 @@ func Handler(request events.APIGatewayProxyResponse) (events.APIGatewayProxyResp
 		}, nil
 	}
 
-	responseBody, _ := json.Marshal(authors)
+	allAuthors := make([]models.GetAuthors, len(authors))
+	for i, author := range authors {
+		allAuthors[i] = models.GetAuthors{
+			UserName: author.UserName,
+			Email:    author.Email,
+		}
+	}
+
+	responseBody, _ := json.Marshal(allAuthors)
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Body:       string(responseBody),
