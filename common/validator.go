@@ -15,3 +15,13 @@ func ValidateAuthorSignup(authorSignupValidator AuthorSignupValidator) error {
 	validate := validator.New()
 	return validate.Struct(authorSignupValidator)
 }
+
+type LoginValidator struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=8,max=255"`
+}
+
+func ValidateAuthorLogin(authorLoginValidator LoginValidator) error {
+	validate := validator.New()
+	return validate.Struct(authorLoginValidator)
+}

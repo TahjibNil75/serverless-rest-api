@@ -48,3 +48,9 @@ func (r *Repository) GetAllAuthorWithRetry() ([]models.Author, error) {
 
 	return nil, err
 }
+
+func (r *Repository) FindAuthor(email string) ([]models.Author, error) {
+	var authors []models.Author
+	err := r.db.Where("email = ?", email).Find(&authors).Error
+	return authors, err
+}

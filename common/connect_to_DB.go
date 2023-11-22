@@ -13,6 +13,7 @@ import (
 type DatabaseIFace interface {
 	CreateAuthor(author *models.Author) (*models.Author, error)
 	GetAllAuthorWithRetry() ([]models.Author, error)
+	FindAuthor(username string) ([]models.Author, error)
 }
 
 type Repository struct {

@@ -35,3 +35,9 @@ functions:
       - httpApi:
           path: /authors_list
           method: get
+  siginAuthor:
+    handler: bin/signin_author
+    events:
+      - httpApi:
+          path: /signin
+          method: post

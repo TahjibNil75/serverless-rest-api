@@ -23,13 +23,13 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
-	err = common.ValidateAuthorSignup(signUpPayload)
-	if err != nil {
-		return events.APIGatewayProxyResponse{
-			StatusCode: 400,
-			Body:       "validation failed",
-		}, nil
-	}
+	// err = common.ValidateAuthorSignup(signUpPayload)
+	// if err != nil {
+	// 	return events.APIGatewayProxyResponse{
+	// 		StatusCode: 400,
+	// 		Body:       "validation failed",
+	// 	}, nil
+	// }
 
 	if signUpPayload.Password != signUpPayload.PasswordConfirm {
 		return events.APIGatewayProxyResponse{
