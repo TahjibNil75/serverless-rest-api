@@ -12,6 +12,7 @@ provider:
      DB_HOST: ${ssm:/db-host}
      DB_PORT: ${ssm:/db-port}
      DB_PASSWORD: ${ssm:/db-password}
+     JWT_SECRET: ${ssm:/jwt-secret}
    
 
 

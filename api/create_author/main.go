@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/tahjib75/common"
 	"github.com/tahjib75/models"
+	"github.com/tahjib75/utils"
 )
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -29,6 +31,40 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
+	if signUpPayload.Password != signUpPayload.PasswordConfirm {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 400,
+			Body:       "Password do not match",
+		}, nil
+	}
+
+	hashpassword, err := utils.HashPassword(signUpPayload.Password)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+			Body:       "Failed to hash password",
+		}, nil
+	}
+	// Create the author
+	newAuthor := models.Author{
+		UserName:  signUpPayload.UserName,
+		Email:     signUpPayload.Email,
+		Password:  hashpassword,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	token, refresh_token, err := utils.CreateToken(newAuthor.Email, newAuthor.Uid)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+			Body:       "Failed to create token",
+		}, nil
+	}
+
+	newAuthor.Token = &token
+	newAuthor.RefreshToken = &refresh_token
+
 	db, err := common.ConnectToDB()
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -37,11 +73,6 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
-	// Create the author
-	newAuthor := models.Author{
-		UserName: signUpPayload.UserName,
-		Email:    signUpPayload.Email,
-	}
 	createdAuthor, err := db.CreateAuthor(&newAuthor)
 	if err != nil {
 		return events.APIGatewayProxyResponse{

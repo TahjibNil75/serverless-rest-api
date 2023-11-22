@@ -3,9 +3,13 @@ package models
 import "time"
 
 type Author struct {
-	ID        uint      `json:"id"`
-	UserName  string    `json:"user_name"`
-	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Uid             uint      `json:"uid" gorm:"primaryKey:unique"`
+	UserName        string    `json:"userName" gorm:"not null" validate:"required, min=3,max=50"`
+	Email           string    `json:"email" gorm:"not null:unique" validate:"email, required"`
+	Password        string    `json:"password" gorm:"not null" validate:"required"`
+	PasswordConfirm string    `json:"passwordConfirm" bindings:"required"`
+	CreatedAt       time.Time `json:"createdAt" gorm:"not null"`
+	UpdatedAt       time.Time `json:"updatedAt" gorm:"not null"`
+	Token           *string   `json:"token"`
+	RefreshToken    *string   `json:"refreshToken"`
 }
