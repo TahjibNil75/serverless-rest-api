@@ -12,6 +12,8 @@ type Author struct {
 	UpdatedAt       time.Time `json:"updatedAt" gorm:"not null"`
 	Token           *string   `json:"token"`
 	RefreshToken    *string   `json:"refreshToken"`
+
+	Article []Article `json:"article" gorm:"foreignKey:AuthorID"`
 }
 
 type GetAuthors struct {

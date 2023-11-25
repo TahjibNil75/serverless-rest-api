@@ -14,6 +14,8 @@ type DatabaseIFace interface {
 	CreateAuthor(author *models.Author) (*models.Author, error)
 	GetAllAuthorWithRetry() ([]models.Author, error)
 	FindAuthor(username string) ([]models.Author, error)
+
+	SaveArticle(article *models.Article) (*models.Article, error)
 }
 
 type Repository struct {

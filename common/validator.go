@@ -25,3 +25,14 @@ func ValidateAuthorLogin(authorLoginValidator LoginValidator) error {
 	validate := validator.New()
 	return validate.Struct(authorLoginValidator)
 }
+
+type ArticleValidator struct {
+	Name    string `json:"name" binding:"required,min=3,max=255"`
+	Content string `json:"content" binding:"required,min=300,max=2000"`
+}
+
+// ValidateArticle validates the ArticleValidator struct.
+func ValidateArticle(articleValidator ArticleValidator) error {
+	validate := validator.New()
+	return validate.Struct(articleValidator)
+}

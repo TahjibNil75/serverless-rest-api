@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"errors"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -80,4 +82,35 @@ func UpdateAllTokens(accessToken string, refreshToken bool) (string, error) {
 	}
 
 	return signedNewAccessToken, nil
+}
+
+var Email string
+
+func ValidateToken(signedToken string) (email string, UserID string, err error) {
+	// Parse the jwt claims
+	token, parseErr := jwt.ParseWithClaims(
+		signedToken,
+		&JwtClaim{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(JwtToken), nil
+		},
+	)
+	if parseErr != nil {
+		err = parseErr
+		return
+	}
+	// Set email and ID values from JWT claims
+	claims, ok := token.Claims.(*JwtClaim)
+	UserID = strconv.Itoa(int(claims.Uid))
+	Email = claims.Email
+	if !ok {
+		err = errors.New("failed to parse jwt claims")
+		return
+	}
+	if claims.ExpiresAt < time.Now().Local().Unix() {
+		err = errors.New("token expired")
+		return
+	}
+	return email, UserID, nil
+
 }

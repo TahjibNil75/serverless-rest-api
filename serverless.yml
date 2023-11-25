@@ -41,3 +41,9 @@ functions:
       - httpApi:
           path: /signin
           method: post
+  createArticle:
+    handler: bin/create_article
+    events:
+      - httpApi:
+          path: /post_article
+          method: post
